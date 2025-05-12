@@ -77,7 +77,8 @@ if destilar_button:
 
     temperatura_seleccionada = st.selectbox(
         "Selecciona la temperatura de ebullición",
-        temperaturas_disponibles
+        temperaturas_disponibles,
+        index=temperaturas_disponibles.index(78)  # Establece 78 como temperatura predeterminada
     )
 
     # Verificar si la temperatura seleccionada está en el DataFrame
@@ -103,6 +104,7 @@ if destilar_button:
                     st.error("No se encontraron datos para la temperatura seleccionada en el CSV.")
         else:
             st.error("La temperatura seleccionada no está disponible en los datos.")
+
 
 
 
