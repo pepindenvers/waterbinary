@@ -11,9 +11,13 @@ st.set_page_config(page_title="Simulador Destilación Etanol-Agua", layout="cent
 @st.cache_data
 def cargar_datos():
     df = pd.read_csv("BINARIA.csv")
+    df.columns = df.columns.str.strip()  # Eliminar espacios extras de las columnas
     return df
 
 df = cargar_datos()
+
+# Verifica las columnas
+st.write(df.columns)
 
 st.title("🧪 Simulador de Destilación Etanol-Agua")
 st.write("Simulador interactivo para la destilación de mezclas etanol-agua usando datos reales de índice de refracción y fracciones molares.")
@@ -81,3 +85,4 @@ if st.session_state.etapas:
                 st.write(f"📌 **Índice de refracción (vapor) a {temperatura_seleccionada}°C:** {ndv}")
             else:
                 st.warning(f"No se encontraron datos para la temperatura {temperatura_seleccionada}°C.")
+
