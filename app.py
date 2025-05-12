@@ -1,3 +1,17 @@
+# Cargar base de datos desde CSV
+@st.cache_data
+def cargar_datos():
+    df = pd.read_csv("BINARIA.csv")
+    df.columns = df.columns.str.strip()  # Eliminar espacios extras de las columnas
+    return df
+
+df = cargar_datos()
+
+# Verificar columnas cargadas
+st.write(df.columns)  # Esto imprime las columnas del CSV para verificar que todo esté correcto
+
+# Ahora sigue con el código normal
+
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
