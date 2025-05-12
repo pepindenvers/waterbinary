@@ -86,3 +86,4 @@ if st.session_state.etapas:
             else:
                 st.warning(f"No se encontraron datos para la temperatura {temperatura_seleccionada}°C.")
 
+
