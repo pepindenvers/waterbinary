@@ -66,8 +66,11 @@ if st.session_state.etapas:
             unsafe_allow_html=True,
         )
 
+        # Obtener temperaturas de ebullición únicas y convertirlas a una lista para el selectbox
+        temperaturas = df["Ebullicion"].dropna().unique()  # Aseguramos que no haya NaN
+        temperaturas = sorted(temperaturas)  # Ordenar las temperaturas
+
         # Select box para elegir la temperatura de ebullición
-        temperaturas = df["Ebullicion"].unique()
         temperatura_seleccionada = st.selectbox("Selecciona la temperatura de ebullición", temperaturas)
 
         # Mostrar tabla con los datos de Ebullicion, ndl, ndv
@@ -78,5 +81,6 @@ if st.session_state.etapas:
                 st.write(datos_destilacion[["Ebullicion", "ndl", "ndv"]])
             else:
                 st.error("No se encontraron datos para la temperatura seleccionada.")
+
 
 
