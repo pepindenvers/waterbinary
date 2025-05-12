@@ -105,14 +105,15 @@ if destilar_button:
                     else:
                         if not datos_destilacion.empty:
                             # Mostrar los resultados de ndl (líquido) y ndv (vapor)
-                            X_etoh = datos_destilacion["ndl"].values[0]
-                            Y_etoh = datos_destilacion["ndv"].values[0]
-                            st.write(f"Fracción molar de etanol en la fase líquida (X): {X_etoh}")
-                            st.write(f"Fracción molar de etanol en la fase vapor (Y): {Y_etoh}")
+                            ndl = datos_destilacion["ndl"].values[0]
+                            ndv = datos_destilacion["ndv"].values[0]
+                            st.write(f"Fracción molar de etanol en la fase líquida (X): {ndl}")
+                            st.write(f"Fracción molar de etanol en la fase vapor (Y): {ndv}")
                         else:
                             st.error("No se encontraron datos para la temperatura seleccionada en el CSV.")
                 else:
                     st.error("La temperatura seleccionada no está disponible en los datos.")
+
 
 
 
