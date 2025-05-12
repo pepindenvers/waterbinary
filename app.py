@@ -16,6 +16,9 @@ def cargar_datos():
 
 df = cargar_datos()
 
+# Verificar las columnas del DataFrame para asegurarnos de que "EBULLICION" existe
+st.write("Columnas disponibles en el archivo CSV:", df.columns)
+
 st.title("🧪 Simulador de Destilación Etanol-Agua")
 st.write("Simulador interactivo para la destilación de mezclas etanol-agua usando datos reales de índice de refracción y fracciones molares.")
 
@@ -75,17 +78,22 @@ if destilar_button:
         [78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 100]
     )
 
-    # Filtrar directamente desde el DataFrame cargado (BINARIA.csv)
-    datos_destilacion = df[df["EBULLICION TEMPERATURA"] == temperatura_seleccionada]
-    
-    if not datos_destilacion.empty:
-        # Mostrar los resultados de ND líquido (X) y vapor (Y)
-        X_etoh = datos_destilacion["X (líquido)"].values[0]
-        Y_etoh = datos_destilacion["Y (vapor)"].values[0]
-        st.write(f"Temperatura de ebullición seleccionada: {temperatura_seleccionada}°C")
-        st.write(f"Fracción molar de etanol en la fase líquida (X): {X_etoh}")
-        st.write(f"Fracción molar de etanol en la fase vapor (Y): {Y_etoh}")
+    # Verificar que la columna "EBULLICION" está en el DataFrame
+    if "EBULLICION" not in df.columns:
+        st.error("Error: La columna 'EBULLICION' no existe en el archivo CSV.")
     else:
-        st.error("No se encontraron datos para la temperatura seleccionada en el CSV.")
+        # Filtrar directamente desde el DataFrame cargado (BINARIA.csv)
+        datos_destilacion = df[df["EBULLICION"] == temperatura_seleccionada]
+        
+        if not datos_destilacion.empty:
+            # Mostrar los resultados de ND líquido (X) y vapor (Y)
+            X_etoh = datos_destilacion["X (líquido)"].values[0]
+            Y_etoh = datos_destilacion["Y (vapor)"].values[0]
+            st.write(f"Temperatura de ebullición seleccionada: {temperatura_seleccionada}°C")
+            st.write(f"Fracción molar de etanol en la fase líquida (X): {X_etoh}")
+            st.write(f"Fracción molar de etanol en la fase vapor (Y): {Y_etoh}")
+        else:
+            st.error("No se encontraron datos para la temperatura seleccionada en el CSV.")
+
 
 
