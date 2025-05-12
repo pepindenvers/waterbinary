@@ -16,7 +16,7 @@ def cargar_datos():
 
 df = cargar_datos()
 
-# Verificar las columnas del DataFrame para asegurarnos de que "EBULLICION" existe
+# Verificar las columnas del DataFrame para asegurarnos de que "Ebullicion" existe
 st.write("Columnas disponibles en el archivo CSV:", df.columns)
 
 st.title("🧪 Simulador de Destilación Etanol-Agua")
@@ -78,12 +78,12 @@ if destilar_button:
         [78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 100]
     )
 
-    # Verificar que la columna "EBULLICION" está en el DataFrame
-    if "EBULLICION" not in df.columns:
-        st.error("Error: La columna 'EBULLICION' no existe en el archivo CSV.")
+    # Verificar que la columna "Ebullicion" está en el DataFrame
+    if "Ebullicion" not in df.columns:
+        st.error("Error: La columna 'Ebullicion' no existe en el archivo CSV.")
     else:
         # Filtrar directamente desde el DataFrame cargado (BINARIA.csv)
-        datos_destilacion = df[df["EBULLICION"] == temperatura_seleccionada]
+        datos_destilacion = df[df["Ebullicion"] == temperatura_seleccionada]
         
         if not datos_destilacion.empty:
             # Mostrar los resultados de ND líquido (X) y vapor (Y)
@@ -94,6 +94,5 @@ if destilar_button:
             st.write(f"Fracción molar de etanol en la fase vapor (Y): {Y_etoh}")
         else:
             st.error("No se encontraron datos para la temperatura seleccionada en el CSV.")
-
 
 
