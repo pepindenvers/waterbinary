@@ -1,8 +1,6 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
-from io import BytesIO
-from PIL import Image
 import base64
 
 st.set_page_config(page_title="Simulador Destilación Etanol-Agua", layout="centered")
@@ -58,38 +56,21 @@ if st.session_state.etapas:
         ax.set_title("Curva de Calibración")
         st.pyplot(fig)
 
-# Ahora el botón Destilar al final
-destilar_button = st.button("Destilar")
+        # Mostrar gif de destilación
+        file_ = open("destila.gif", "rb")
+        contents = file_.read()
+        data_url = base64.b64encode(contents).decode("utf-8")
+        file_.close()
+        st.markdown(
+            f'<img src="data:image/gif;base64,{data_url}" alt="destilacion" style="width: 300px;">',
+            unsafe_allow_html=True,
+        )
 
-if destilar_button:
-    # Mostrar el gif de destilación
-    file_ = open("destila.gif", "rb")
-    contents = file_.read()
-    data_url = base64.b64encode(contents).decode("utf-8")
-    file_.close()
-    st.markdown(
-        f'<img src="data:image/gif;base64,{data_url}" alt="destilacion" style="width: 300px;">',
-        unsafe_allow_html=True,
-    )
+        # Select box para elegir la temperatura de ebullición
+        temperaturas = df["Ebullicion"].unique()
+        temperatura_seleccionada = st.selectbox("Selecciona la temperatura de ebullición", temperaturas)
 
-    # Pedir la temperatura de ebullición (ahora como un input de texto)
-    temperatura_input = st.text_input(
-        "Escribe la temperatura de ebullición (78, 79, 80, etc.)",
-        value="78"
-    )
-
-    # Convertir el valor de entrada a número entero
-    try:
-        temperatura_seleccionada = int(temperatura_input)
-    except ValueError:
-        st.error("Por favor ingresa un número válido para la temperatura.")
-        temperatura_seleccionada = None
-
-    # Verificar si la temperatura seleccionada está en el DataFrame
-    if temperatura_seleccionada is not None:
-        st.write(f"Temperatura de ebullición seleccionada: {temperatura_seleccionada}°C")
-        
-        # Agregar un botón para medir ndl y ndv después de escribir la temperatura
+        # Botón para medir ndl y ndv
         if st.button("Medir ndl y ndv"):
             # Buscar la temperatura seleccionada en el DataFrame
             if "Ebullicion" not in df.columns:
@@ -113,6 +94,7 @@ if destilar_button:
                             st.error("No se encontraron datos para la temperatura seleccionada en el CSV.")
                 else:
                     st.error("La temperatura seleccionada no está disponible en los datos.")
+
 
 
 
