@@ -45,9 +45,16 @@ if destilar_button:
         [78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 100]
     )
 
+    # Asegurarse de que el nombre de la columna esté correctamente escrito
+    # Limpiar espacios y verificar la columna
+    df.columns = df.columns.str.strip()  # Eliminar espacios extras en los nombres de las columnas
+
     # Filtrar datos de destilación según la temperatura seleccionada
-    datos_destilacion = df[df["EBULLICION TEMPERATURA"] == temperatura_seleccionada]
-    
+    if "EBULLICION TEMPERATURA" in df.columns:
+        datos_destilacion = df[df["EBULLICION TEMPERATURA"] == temperatura_seleccionada]
+    else:
+        st.error("No se encuentra la columna 'EBULLICION TEMPERATURA' en los datos.")
+
     if not datos_destilacion.empty:
         # Mostrar los resultados de ND líquido (X) y vapor (Y)
         X_etoh = datos_destilacion["X (líquido)"].values[0]
