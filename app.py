@@ -87,6 +87,9 @@ if destilar_button:
 
     # Verificar si la temperatura seleccionada está en el DataFrame
     if temperatura_seleccionada is not None:
+        st.write(f"Temperatura de ebullición seleccionada: {temperatura_seleccionada}°C")
+        
+        # Buscar la temperatura seleccionada en el DataFrame
         if "Ebullicion" not in df.columns:
             st.error("Error: La columna 'Ebullicion' no existe en el archivo CSV.")
         else:
@@ -102,7 +105,6 @@ if destilar_button:
                         # Mostrar los resultados de ndl (líquido) y ndv (vapor)
                         X_etoh = datos_destilacion["ndl"].values[0]
                         Y_etoh = datos_destilacion["ndv"].values[0]
-                        st.write(f"Temperatura de ebullición seleccionada: {temperatura_seleccionada}°C")
                         st.write(f"Fracción molar de etanol en la fase líquida (X): {X_etoh}")
                         st.write(f"Fracción molar de etanol en la fase vapor (Y): {Y_etoh}")
                     else:
