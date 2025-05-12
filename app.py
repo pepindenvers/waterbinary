@@ -50,10 +50,10 @@ if destilar_button:
     df.columns = df.columns.str.strip()  # Eliminar espacios extras en los nombres de las columnas
 
     # Filtrar datos de destilación según la temperatura seleccionada
-    if "EBULLICION TEMPERATURA" in df.columns:
-        datos_destilacion = df[df["EBULLICION TEMPERATURA"] == temperatura_seleccionada]
+    if "EBULLICION" in df.columns:
+        datos_destilacion = df[df["EBULLICION"] == temperatura_seleccionada]
     else:
-        st.error("No se encuentra la columna 'EBULLICION TEMPERATURA' en los datos.")
+        st.error("No se encuentra la columna 'EBULLICION' en los datos.")
 
     if not datos_destilacion.empty:
         # Mostrar los resultados de ND líquido (X) y vapor (Y)
@@ -94,4 +94,5 @@ if st.session_state.etapas:
         ax.set_ylabel("Índice de Refracción")
         ax.set_title("Curva de Calibración")
         st.pyplot(fig)
+
 
