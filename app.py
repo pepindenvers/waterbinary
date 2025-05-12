@@ -70,36 +70,13 @@ if st.session_state.etapas:
         temperaturas = df["Ebullicion"].unique()
         temperatura_seleccionada = st.selectbox("Selecciona la temperatura de ebullición", temperaturas)
 
-        # Botón para medir ndl y ndv
-        if st.button("Medir ndl y ndv"):
-            # Buscar la temperatura seleccionada en el DataFrame
-            if "Ebullicion" not in df.columns:
-                st.error("Error: La columna 'Ebullicion' no existe en el archivo CSV.")
+        # Mostrar tabla con los datos de Ebullicion, ndl, ndv
+        if temperatura_seleccionada:
+            datos_destilacion = df[df["Ebullicion"] == temperatura_seleccionada]
+            if not datos_destilacion.empty:
+                st.write(f"Datos para la temperatura de ebullición {temperatura_seleccionada}°C:")
+                st.write(datos_destilacion[["Ebullicion", "ndl", "ndv"]])
             else:
-                # Asegurarnos de que la temperatura seleccionada esté en el DataFrame
-                if temperatura_seleccionada in df["Ebullicion"].values:
-                    datos_destilacion = df[df["Ebullicion"] == temperatura_seleccionada]
-
-                    # Verificar si las columnas 'ndl' y 'ndv' existen en el DataFrame
-                    if "ndl" not in df.columns or "ndv" not in df.columns:
-                        st.error("Error: Las columnas 'ndl' o 'ndv' no existen en el archivo CSV.")
-                    else:
-                        if not datos_destilacion.empty:
-                            # Mostrar los resultados de ndl (líquido) y ndv (vapor)
-                            ndl = datos_destilacion["ndl"].values[0]
-                            ndv = datos_destilacion["ndv"].values[0]
-                            st.write(f"Fracción molar de etanol en la fase líquida (X): {ndl}")
-                            st.write(f"Fracción molar de etanol en la fase vapor (Y): {ndv}")
-                        else:
-                            st.error("No se encontraron datos para la temperatura seleccionada en el CSV.")
-                else:
-                    st.error("La temperatura seleccionada no está disponible en los datos.")
-
-
-
-
-
-
-
+                st.error("No se encontraron datos para la temperatura seleccionada.")
 
 
