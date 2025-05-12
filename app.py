@@ -1,17 +1,3 @@
-# Cargar base de datos desde CSV
-@st.cache_data
-def cargar_datos():
-    df = pd.read_csv("BINARIA.csv")
-    df.columns = df.columns.str.strip()  # Eliminar espacios extras de las columnas
-    return df
-
-df = cargar_datos()
-
-# Verificar columnas cargadas
-st.write(df.columns)  # Esto imprime las columnas del CSV para verificar que todo esté correcto
-
-# Ahora sigue con el código normal
-
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -30,9 +16,6 @@ def cargar_datos():
 
 df = cargar_datos()
 
-# Verifica las columnas
-st.write(df.columns)
-
 st.title("🧪 Simulador de Destilación Etanol-Agua")
 st.write("Simulador interactivo para la destilación de mezclas etanol-agua usando datos reales de índice de refracción y fracciones molares.")
 
@@ -42,7 +25,6 @@ porc_inicial = st.slider("Selecciona el porcentaje de etanol inicial en la mezcl
 if 'etapas' not in st.session_state:
     st.session_state.etapas = []
 
-# Botón para iniciar la medición
 if st.button("Iniciar medición"):
     file_ = open("alcoho.gif", "rb")
     contents = file_.read()
@@ -72,32 +54,32 @@ if st.session_state.etapas:
         ax.set_title("Curva de Calibración")
         st.pyplot(fig)
 
-# Botón de Destilar, que aparece después de finalizar medición
-if st.button("Destilar"):
-    # Mostrar GIF de destilación
-    file_ = open("destila.gif", "rb")
-    contents = file_.read()
-    data_url = base64.b64encode(contents).decode("utf-8")
-    file_.close()
-    st.markdown(
-        f'<img src="data:image/gif;base64,{data_url}" alt="destilacion" style="width: 300px;">',
-        unsafe_allow_html=True,
-    )
+        if st.button("Destilar"):
+            # Mostrar el gif de destilación
+            file_ = open("destila.gif", "rb")
+            contents = file_.read()
+            data_url = base64.b64encode(contents).decode("utf-8")
+            file_.close()
+            st.markdown(
+                f'<img src="data:image/gif;base64,{data_url}" alt="destilacion" style="width: 300px;">',
+                unsafe_allow_html=True,
+            )
 
-    # Solicitar al usuario seleccionar la temperatura de ebullición
-    temperatura_seleccionada = st.selectbox(
-        "Selecciona la temperatura de ebullición",
-        [78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 100]
-    )
+            # Pedir la temperatura de ebullición
+            temperatura_seleccionada = st.selectbox(
+                "Selecciona la temperatura de ebullición",
+                [78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 100]
+            )
 
-    # Buscar los índices de refracción para la temperatura seleccionada
-    datos_destilacion = df[df["EBULLICION TEMPERATURA"] == temperatura_seleccionada]
-
-    if not datos_destilacion.empty:
-        ndl = datos_destilacion["indice de refraccion"].values[0]  # Índice de refracción líquido
-        ndv = datos_destilacion["nd indice de refraccion"].values[0]  # Índice de refracción vapor
-
-        st.write(f"📌 **Índice de refracción (líquido) a {temperatura_seleccionada}°C:** {ndl}")
-        st.write(f"📌 **Índice de refracción (vapor) a {temperatura_seleccionada}°C:** {ndv}")
-    else:
-        st.warning(f"No se encontraron datos para la temperatura {temperatura_seleccionada}°C.")
+            # Filtrar datos de destilación según la temperatura seleccionada
+            datos_destilacion = df[df["EBULLICION TEMPERATURA"] == temperatura_seleccionada]
+            
+            if not datos_destilacion.empty:
+                # Mostrar los resultados de ND líquido (X) y vapor (Y)
+                X_etoh = datos_destilacion["X (líquido)"].values[0]
+                Y_etoh = datos_destilacion["Y (vapor)"].values[0]
+                st.write(f"Temperatura de ebullición seleccionada: {temperatura_seleccionada}°C")
+                st.write(f"Fracción molar de etanol en la fase líquida (X): {X_etoh}")
+                st.write(f"Fracción molar de etanol en la fase vapor (Y): {Y_etoh}")
+            else:
+                st.error("No se encontraron datos para la temperatura seleccionada.")
